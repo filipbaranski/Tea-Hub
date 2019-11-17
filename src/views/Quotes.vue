@@ -67,7 +67,7 @@ export default {
         }
     }
 
-    @media only screen and (min-width: 360px) {
+    @media only screen and (min-width: 1024px) {
         .quotes {
             flex-direction: row;
             &-container {
