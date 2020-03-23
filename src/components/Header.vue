@@ -47,7 +47,7 @@ export default {
     }
     header {
         background-image: url('../assets/bar360.png');
-        background-size: 360px;
+        background-size: 100%;
         height: 55px;
         text-align: center;
         background-repeat: no-repeat;
@@ -93,14 +93,13 @@ export default {
         }
     }
 
-    @media only screen and (min-width: 1024px) {
+    @media only screen and (min-width: 768px) {
         header {
-            background-size: 100%;
             height: 75px;
             background-image: url('../assets/bar.png');
             h1 {
-                line-height: 75px;
                 font-size: 50px;
+                line-height: 75px;
             }
         }
         nav {
