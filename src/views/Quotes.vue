@@ -28,7 +28,6 @@ export default {
                 'Misery is comfortable, <strong>happiness takes effort.</strong>',
                 'Focus on new routine. It takes 20 to 28 days to form new habit. <strong>Trust the process.</strong>',
                 'Loneliness is the greatest trigger of any addiction. <strong>Seek company.</strong>',
-                'Pomodoro – <strong>25/5</strong>',
                 'Fear of loss is greater then hope of gain. It\'s human nature to avoid loss. <strong>Don\'t fall for avoiding loss.</strong>',
                 'Prove yourself wrong. Think about the outcome and change action according to your answer. <strong>Your reasons don\'t matter, the outcome does.</strong>',
                 '<strong>Form a habit through small actions.</strong> Make them actionalbe, make them easy (but leave room for improvement), set deadlines, make yourself accountable.',
