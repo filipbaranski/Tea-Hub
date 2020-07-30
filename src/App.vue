@@ -13,10 +13,18 @@ export default {
     components: {
         Header,
     },
+    mounted() {
+        this.$store.dispatch('getQuotes');
+        this.$store.dispatch('getDates');
+    },
 };
 </script>
 
 <style lang="scss">
+    body::-webkit-scrollbar {
+        display: none;
+    }
+
     #app {
         min-height: 100vh;
         -webkit-font-smoothing: antialiased;

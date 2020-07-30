@@ -5,16 +5,21 @@
 </template>
 
 <script>
-import { quotes } from '@/data/quotes.json';
 
 export default {
     name: 'quote',
     computed: {
+        quotes() {
+            return this.$store.state.quotes;
+        },
         randomQuote() {
-            const min = 0;
-            const max = quotes.length;
-            const randomNumber = min + Math.floor((max - min) * Math.random());
-            return quotes[randomNumber];
+            if (this.quotes.length !== 0) {
+                const min = 0;
+                const max = this.quotes.length;
+                const randomNumber = min + Math.floor((max - min) * Math.random());
+                return this.quotes[randomNumber];
+            }
+            return '';
         },
     },
 };

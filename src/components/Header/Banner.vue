@@ -45,6 +45,10 @@ export default {
             height: 75px;
             background-image: url('../../assets/bar.png');
 
+            &.sticky {
+                margin-bottom: 0;
+            }
+
             h1 {
                 font-size: 50px;
                 line-height: 75px;

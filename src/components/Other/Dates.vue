@@ -1,8 +1,13 @@
 <template>
     <section class="date">
+        <AddModal
+            v-if="modalOpen"
+            v-on:closeModal="closeModal"
+            type='date'
+        />
         <div
-            v-for="date of dates"
-            v-bind:key="date.event"
+            v-for="date of orderedDates"
+            v-bind:key="date.id"
             class="date-container"
         >
             <p class="date-format">
@@ -12,18 +17,82 @@
                 {{ date.event }}
             </p>
         </div>
+        <div class="date-container-space" />
+        <div
+            v-for="date of orderedOneTimeDates"
+            v-bind:key="date.id"
+            class="date-container"
+        >
+            <p class="date-format">
+                {{ date.day }}.{{ date.month }}.{{ date.year }}
+            </p>
+            <p class="date-event">
+                {{ date.event }}
+            </p>
+        </div>
+        <section v-on:click="openModal">
+            <AddButton />
+        </section>
     </section>
 </template>
 
 <script>
-import { dates } from '@/data/dates.json';
+import AddButton from '@/components/AddButton.vue';
+import AddModal from '@/components/AddModal.vue';
 
 export default {
     name: 'tabs',
+    components: {
+        AddButton,
+        AddModal,
+    },
     data() {
         return {
-            dates,
+            modalOpen: false,
         };
+    },
+    computed: {
+        datesData() {
+            return this.$store.state.dates;
+        },
+        orderedDates() {
+            if (this.datesData.length !== 0) {
+                const data = this.datesData;
+                const filtered = data.filter(date => !date.year);
+                const result = filtered.sort(this.compare);
+                return result;
+            }
+            return [];
+        },
+        orderedOneTimeDates() {
+            if (this.datesData.length !== 0) {
+                const data = this.datesData;
+                const filtered = data.filter(date => date.year);
+                const result = filtered.sort(this.compareWithYear);
+                return result;
+            }
+            return [];
+        },
+    },
+    methods: {
+        compare(a, b) {
+            if (`${a.month}${a.day}` > `${b.month}${b.day}`) return 1;
+            if (`${b.month}${b.day}` > `${a.month}${a.day}`) return -1;
+
+            return 0;
+        },
+        compareWithYear(a, b) {
+            if (`${a.year}${a.month}${a.day}` > `${b.year}${b.month}${b.day}`) return 1;
+            if (`${b.year}${b.month}${b.day}` > `${a.year}${a.month}${a.day}`) return -1;
+
+            return 0;
+        },
+        openModal() {
+            this.modalOpen = true;
+        },
+        closeModal() {
+            this.modalOpen = false;
+        },
     },
 };
 </script>
@@ -46,6 +115,11 @@ export default {
             border: 2px solid $border-green;
             height: 25px;
             font-size: 14px;
+
+            &-space {
+                width: 100%;
+                height: 20px;
+            }
         }
 
         &-format {
@@ -56,6 +130,7 @@ export default {
             color: $white;
             height: 100%;
             background-color: $border-green;
+            padding: 0 5px;
         }
 
         &-event {

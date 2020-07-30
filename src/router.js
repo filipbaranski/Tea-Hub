@@ -30,5 +30,9 @@ export default new Router({
             name: 'other',
             component: Other,
         },
+        {
+            path: '*',
+            redirect: '/',
+        },
     ],
 });

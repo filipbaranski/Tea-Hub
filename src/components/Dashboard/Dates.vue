@@ -7,7 +7,7 @@
                     {{n - 1 === 1 ? `Jutro` : ''}}
                     {{n - 1 > 1 ? `Za ${n - 1} dni` : ''}}
                 </p>
-                <span v-for="event in eventFilter(n - 1)" :key="event.event">
+                <span v-for="event in eventFilter(n - 1)" :key="event.id">
                     <p>{{ event.event }}</p>
                 </span>
             </div>
@@ -16,8 +16,6 @@
 </template>
 
 <script>
-import { dates } from '@/data/dates.json';
-
 export default {
     name: 'quote',
     data() {
@@ -35,10 +33,12 @@ export default {
             const currentYear = today.getFullYear();
             const currentDate = new Date(currentYear, currentMonth, today.getDate());
             const currentTime = currentDate.getTime();
-            dates.forEach((date) => {
+            const data = this.$store.state.dates;
+            data.forEach((date) => {
                 const eventDay = parseInt(date.day, 10);
                 const eventMonth = parseInt(date.month, 10) - 1;
                 let eventYear = currentYear;
+                if (date.year) eventYear = parseInt(date.year, 10);
                 if (eventMonth < currentMonth) {
                     eventYear = currentYear + 1;
                 }
@@ -86,6 +86,8 @@ export default {
         font-size: 14px;
         bottom: 20px;
         animation: moduleUpFadeIn 1s;
+        min-width: 230px;
+        max-width: 75vw;
 
         &-heading {
             margin-bottom: 5px;

@@ -42,8 +42,6 @@ export default {
             position: absolute;
             left: 50%;
             transform: translateX(-50%);
-            min-width: 230px;
-            max-width: 75vw;
             text-align: center;
             z-index: 100;
         }

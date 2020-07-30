@@ -1,5 +1,10 @@
 <template>
     <section class="quote">
+        <AddModal
+            v-if="modalOpen"
+            v-on:closeModal="closeModal"
+            type='quote'
+        />
         <div
             v-for="quote of quotes"
             v-bind:key="quote.id"
@@ -9,18 +14,39 @@
                 {{ quote.text }} <strong> {{ quote.strong }} </strong>
             </p>
         </div>
+        <section v-on:click="openModal">
+            <AddButton />
+        </section>
     </section>
 </template>
 
 <script>
-import { quotes } from '@/data/quotes.json';
+import AddButton from '@/components/AddButton.vue';
+import AddModal from '@/components/AddModal.vue';
 
 export default {
     name: 'quotes',
+    components: {
+        AddButton,
+        AddModal,
+    },
     data() {
         return {
-            quotes,
+            modalOpen: false,
         };
+    },
+    computed: {
+        quotes() {
+            return this.$store.state.quotes;
+        },
+    },
+    methods: {
+        openModal() {
+            this.modalOpen = true;
+        },
+        closeModal() {
+            this.modalOpen = false;
+        },
     },
 };
 </script>
@@ -44,7 +70,7 @@ export default {
             height: 105px;
             background-image: url('../../assets/quote360.png');
             background-repeat: no-repeat;
-            background-size: 35px;
+            background-size: 30px;
             background-position: 10px 10px;
         }
 

@@ -1,6 +1,6 @@
 <template>
     <div class="projects">
-        <p>Projects</p>
+        <p v-on:click="increment()">Projects</p>
     </div>
 </template>
 
