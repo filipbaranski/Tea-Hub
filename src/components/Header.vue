@@ -1,112 +1,114 @@
 <template>
     <div class="header">
-        <header>
-            <router-link to="/">
-                <h1>Tea Hub</h1>
-            </router-link>
-        </header>
-        <nav>
-            <router-link
-                to="/projects"
-                :class="{'active': this.$route.name === 'projects' }"
-            >
-                Projekty
-            </router-link>
-            <router-link
-                to="/calendar"
-                :class="{'active': this.$route.name === 'calendar' }"
-            >
-                Kalendarz
-            </router-link>
-            <router-link
-                to="/ig"
-                :class="{'active': this.$route.name === 'ig' }"
-            >
-                IG
-            </router-link>
-            <router-link
-                to="/quotes"
-                :class="{'active': this.$route.name === 'quotes' }"
-            >
-                Quotes
-            </router-link>
-        </nav>
+        <Banner
+            v-on:closeMenu="setMenuState(false)"
+            v-bind:windowTop="windowTop"
+        />
+        <MobileMenuBar
+            v-on:openMenu="setMenuState(true)"
+            v-bind:windowTop="windowTop"
+        />
+        <MenuItems
+            :class="{'menu-mobile': true, 'open': menuOpened}"
+            v-on:closeMenu="setMenuState(false)"
+            v-bind:role="role"
+            v-bind:route="this.$route.name"
+        />
+        <MenuItems
+            class="menu-desktop"
+            v-bind:role="role"
+            v-bind:route="this.$route.name"
+        />
     </div>
 </template>
 
 <script>
+import Banner from '@/components/Header/Banner.vue';
+import MobileMenuBar from '@/components/Header/MobileMenuBar.vue';
+import MenuItems from '@/components/Header/MenuItems.vue';
+
 export default {
     name: 'Header',
+    components: {
+        Banner,
+        MobileMenuBar,
+        MenuItems,
+    },
+    data() {
+        return {
+            role: 'admin',
+            menuOpened: false,
+            windowTop: 0,
+        };
+    },
+    mounted() {
+        window.addEventListener('scroll', this.onScroll);
+    },
+    beforeDestroy() {
+        window.removeEventListener('scroll', this.onScroll);
+    },
+    methods: {
+        onScroll() {
+            this.windowTop = window.top.scrollY;
+        },
+        setMenuState(value) {
+            const bodyElement = document.body;
+            bodyElement.classList.toggle('noscroll', value);
+            this.menuOpened = value;
+        },
+    },
 };
 </script>
 
 <style scoped lang="scss">
+    @import '@/styles/global.scss';
+
+    .overlay {
+        position: fixed;
+        top: 0;
+        bottom: 0;
+        right: 0;
+        left: 0;
+    }
+
     .header {
         display: flex;
         flex-direction: column;
     }
-    header {
-        background-image: url('../assets/bar360.png');
-        background-size: 100%;
-        height: 55px;
-        text-align: center;
-        background-repeat: no-repeat;
-        a {
-            text-decoration: none;
-        }
-        h1 {
-            line-height: 55px;
-            color: #ffffff;
-            font-size: 30px;
-            margin: 0;
-            text-shadow: 0 0 10px #000000, 0 0 30px #000000, 0 0 50px #000000;
-        }
+
+    .menu-desktop {
+        display: none;
     }
-    img {
-        width: 100%;
-        height: 55px;
-        object-fit: cover;
-        margin-bottom: -4px;
-    }
-    nav {
+
+    .menu-mobile {
+        position: fixed;
+        bottom: 0;
+        right: -150%;
         display: flex;
-        justify-content: space-between;
-        height: 35px;
-        background-color: #fff;
-        > a {
-            color: black;
-            text-decoration: none;
-            font-weight: bold;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex: 1;
-            border-bottom: 3px solid #eeffee;
-            line-height: 35px;
-            font-size: 14px;
-            &:hover {
-                border-bottom: 3px solid #99cc33;
-            }
-        }
-        & .active {
-            border-bottom: 3px solid #99cc33;
+        flex-direction: column;
+        background-color: $white;
+        height: 100vh;
+        width: 100vw;
+        opacity: 0;
+        z-index: 200;
+        transition: right 0.25s, opacity 0.5s;
+
+        &.open {
+            right: 0;
+            opacity: 0.95;
         }
     }
 
     @media only screen and (min-width: 768px) {
-        header {
-            height: 75px;
-            background-image: url('../assets/bar.png');
-            h1 {
-                font-size: 50px;
-                line-height: 75px;
-            }
+        .menu-mobile {
+            display: none;
         }
-        nav {
+
+        .menu-desktop {
+            display: flex;
+            justify-content: space-between;
             height: 55px;
-            a {
-                font-size: 18px;
-            }
+            background-color: $white;
         }
     }
 </style>

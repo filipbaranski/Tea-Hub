@@ -1,12 +1,11 @@
 <template>
     <div id="app">
-        <Header msg="Welcome to Your Vue.js App"/>
-        <router-view/>
+        <Header />
+        <router-view />
     </div>
 </template>
 
 <script>
-import './styles/index.scss';
 import Header from '@/components/Header.vue';
 
 export default {
@@ -19,7 +18,12 @@ export default {
 
 <style lang="scss">
     #app {
+        min-height: 100vh;
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
+    }
+
+    .noscroll {
+        overflow: hidden;
     }
 </style>
