@@ -1,8 +1,6 @@
 <template>
     <section class="calendar">
-        <button v-on:click="test()">Populate</button>
-        <p>{{calendarData}}</p>
-        <main class="calendar-proper">
+        <main class="calendar-proper" v-if="Object.keys(calendarData).length !== 0">
             <div
                 class="calendar-day"
                 v-for="day of emptyDays(year, month)"
@@ -12,18 +10,19 @@
                 :class="{
                     'calendar-day': true,
                     'calendar-day-filled': true,
-                    'green': day < currentDay
+                    'green': day <= currentDay && calendarData.red.indexOf(day) === -1,
+                    'red': day <= currentDay && calendarData.red.indexOf(day) !== -1
                 }"
                 v-for="day of daysInMonth(year, month)"
                 v-bind:key="`actual-day-${day}`"
             >
                 <p>{{dayContent(day)}}</p>
                 <div
-                    v-if="day < currentDay"
+                    v-if="day <= currentDay"
                     class="calendar-day-footer"
                 >
-                    <p>50</p>
-                    <img  src="../assets/cube.png" />
+                    <p>{{calendarData.number[day - 1] === 0 ? '' : calendarData.number[day - 1]}}</p>
+                    <img v-if="calendarData.no_cube.indexOf(day) === -1" src="../assets/svg/Cube.svg" />
                 </div>
             </div>
         </main>
@@ -46,9 +45,6 @@ export default {
         },
     },
     methods: {
-        test() {
-            this.$store.dispatch('getCalendar', { year: 2021, month: 1 });
-        },
         daysInMonth(y, m) {
             return new Date(y, m + 1, 0).getDate();
         },
@@ -60,7 +56,7 @@ export default {
             return emptyBefore - 1;
         },
         dayContent(day) {
-            if (day < this.currentDay) {
+            if (day <= this.currentDay) {
                 return '';
             }
             return day;
@@ -121,6 +117,7 @@ export default {
                 position: absolute;
                 height: 100%;
                 width: 100%;
+                text-shadow: $text-shadow;
 
                 p {
                     position: absolute;

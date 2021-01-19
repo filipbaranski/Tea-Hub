@@ -14,8 +14,10 @@ export default {
         Header,
     },
     mounted() {
+        const date = new Date();
         this.$store.dispatch('getQuotes');
         this.$store.dispatch('getDates');
+        this.$store.dispatch('getCalendar', { year: date.getFullYear(), month: date.getMonth() + 1 });
     },
 };
 </script>
