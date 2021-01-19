@@ -1,11 +1,11 @@
 self.__precacheManifest = [
   {
-    "revision": "1af998f6e60257237af8",
-    "url": "/Tea-Hub/css/app.fbb6674d.css"
+    "revision": "700d147dc86763545be5",
+    "url": "/Tea-Hub/css/app.155e1126.css"
   },
   {
-    "revision": "1af998f6e60257237af8",
-    "url": "/Tea-Hub/js/app.25d41ee5.js"
+    "revision": "700d147dc86763545be5",
+    "url": "/Tea-Hub/js/app.2fff9909.js"
   },
   {
     "revision": "594ce484521387f1f67b",
@@ -16,10 +16,6 @@ self.__precacheManifest = [
     "url": "/Tea-Hub/img/fav.f00e8ab7.png"
   },
   {
-    "revision": "de33f4b3213a76c710d991a2d92686a3",
-    "url": "/Tea-Hub/img/cube.de33f4b3.png"
-  },
-  {
     "revision": "409bd4791041a5518e20ecfbd2dd9c61",
     "url": "/Tea-Hub/img/bar360.409bd479.png"
   },
@@ -28,7 +24,11 @@ self.__precacheManifest = [
     "url": "/Tea-Hub/img/bar.9fbfa79d.png"
   },
   {
-    "revision": "0c916ca22fc0ab91e72ddaed6e559834",
+    "revision": "307cf34276862d1681372a6859ed6e83",
+    "url": "/Tea-Hub/img/Cube.307cf342.svg"
+  },
+  {
+    "revision": "69d6ac75fa3f26dd8482ede37378f213",
     "url": "/Tea-Hub/index.html"
   },
   {
