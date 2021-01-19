@@ -24,15 +24,15 @@ export default {
     },
     data() {
         return {
-            view: 'quotes',
+            view: 'dates',
             viewData: [
-                {
-                    text: 'Cytaty',
-                    label: 'quotes',
-                },
                 {
                     text: 'Daty',
                     label: 'dates',
+                },
+                {
+                    text: 'Cytaty',
+                    label: 'quotes',
                 },
             ],
         };

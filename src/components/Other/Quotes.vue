@@ -5,10 +5,17 @@
             v-on:closeModal="closeModal"
             type='quote'
         />
+        <EditModal
+            v-if="editModalOpen"
+            v-on:closeModal="closeEditModal"
+            type='quote'
+            v-bind:data="this.editedData"
+        />
         <div
             v-for="quote of quotes"
             v-bind:key="quote.id"
             class="quote-container"
+            v-on:click="openEditModal(quote)"
         >
             <p class="quote-text">
                 {{ quote.text }} <strong> {{ quote.strong }} </strong>
@@ -23,16 +30,20 @@
 <script>
 import AddButton from '@/components/AddButton.vue';
 import AddModal from '@/components/AddModal.vue';
+import EditModal from '@/components/EditModal.vue';
 
 export default {
     name: 'quotes',
     components: {
         AddButton,
         AddModal,
+        EditModal,
     },
     data() {
         return {
             modalOpen: false,
+            editModalOpen: false,
+            editedData: {},
         };
     },
     computed: {
@@ -46,6 +57,13 @@ export default {
         },
         closeModal() {
             this.modalOpen = false;
+        },
+        openEditModal(data) {
+            this.editedData = data;
+            this.editModalOpen = true;
+        },
+        closeEditModal() {
+            this.editModalOpen = false;
         },
     },
 };
@@ -72,6 +90,11 @@ export default {
             background-repeat: no-repeat;
             background-size: 30px;
             background-position: 10px 10px;
+
+            &:hover {
+                background: $pale-green;
+                cursor: pointer;
+            }
         }
 
         &-text {

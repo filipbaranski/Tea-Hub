@@ -7,6 +7,8 @@ import './registerServiceWorker';
 
 Vue.config.productionTip = false;
 
+store.dispatch('getVersion');
+
 new Vue({
     router,
     store,

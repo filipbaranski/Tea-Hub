@@ -13,7 +13,7 @@ export default {
 
     .button {
         position: fixed;
-        bottom: 30px;
+        bottom: 10px;
         right: 30px;
         width: 45px;
         height: 45px;

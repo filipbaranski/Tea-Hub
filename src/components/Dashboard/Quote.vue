@@ -1,6 +1,6 @@
 <template>
     <div class="quote">
-        <p>{{ randomQuote.strong}}</p>
+        <p>{{ randomQuote.strong }}</p>
     </div>
 </template>
 

@@ -1,30 +1,38 @@
 <template>
     <section class="date">
         <AddModal
-            v-if="modalOpen"
+            v-if="addModalOpen"
             v-on:closeModal="closeModal"
             type='date'
         />
+        <EditModal
+            v-if="editModalOpen"
+            v-on:closeModal="closeEditModal"
+            type='date'
+            v-bind:data="this.editedData"
+        />
         <div
-            v-for="date of orderedDates"
+            v-for="date of orderedOneTimeDates"
             v-bind:key="date.id"
-            class="date-container"
+            :class="{'date-container': true, 'grey': passed(date) === true}"
+            v-on:click="openEditModal(date)"
         >
             <p class="date-format">
-                {{ date.day }}.{{ date.month }}
+                {{ date.day }}.{{ date.month }}.{{ date.year }}
             </p>
             <p class="date-event">
                 {{ date.event }}
             </p>
         </div>
-        <div class="date-container-space" />
+        <p class="date-separator">Coroczne</p>
         <div
-            v-for="date of orderedOneTimeDates"
+            v-for="date of orderedDates"
             v-bind:key="date.id"
             class="date-container"
+            v-on:click="openEditModal(date)"
         >
             <p class="date-format">
-                {{ date.day }}.{{ date.month }}.{{ date.year }}
+                {{ date.day }}.{{ date.month }}
             </p>
             <p class="date-event">
                 {{ date.event }}
@@ -39,16 +47,20 @@
 <script>
 import AddButton from '@/components/AddButton.vue';
 import AddModal from '@/components/AddModal.vue';
+import EditModal from '@/components/EditModal.vue';
 
 export default {
     name: 'tabs',
     components: {
         AddButton,
         AddModal,
+        EditModal,
     },
     data() {
         return {
-            modalOpen: false,
+            addModalOpen: false,
+            editModalOpen: false,
+            editedData: {},
         };
     },
     computed: {
@@ -88,10 +100,25 @@ export default {
             return 0;
         },
         openModal() {
-            this.modalOpen = true;
+            this.addModalOpen = true;
         },
         closeModal() {
-            this.modalOpen = false;
+            this.addModalOpen = false;
+        },
+        openEditModal(data) {
+            this.editedData = data;
+            this.editModalOpen = true;
+        },
+        closeEditModal() {
+            this.editModalOpen = false;
+        },
+        passed(date) {
+            const currentDate = new Date().toJSON().slice(0, 10);
+            // eslint-disable-next-line
+            const entryDate = ({ year, month, day }) => new Date(year, month - 1, parseInt(day, 10) + 1)
+                .toJSON()
+                .slice(0, 10);
+            return entryDate(date) < currentDate;
         },
     },
 };
@@ -116,10 +143,53 @@ export default {
             height: 25px;
             font-size: 14px;
 
+            &.grey {
+                border: 2px solid $grey;
+
+                > .date-format {
+                    background-color: $grey;
+                }
+
+                &:hover {
+                    background: $pale-grey;
+                }
+            }
+
+            &:hover {
+                background: $pale-green;
+                cursor: pointer;
+            }
+
+            section {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+
+                img {
+                    width: 18px;
+                    height: 18px;
+                    margin-left: 12px;
+
+                    &:hover {
+                        cursor: pointer;
+                    }
+                }
+            }
+
             &-space {
                 width: 100%;
                 height: 20px;
             }
+        }
+
+        &-separator {
+            margin-top: 20px;
+            margin-bottom: 5px;
+            font-size: 16px;
+            text-decoration: underline;
+            width: 83.33%;
+            padding-left: 16.67%;
+            text-align: center;
         }
 
         &-format {
@@ -149,6 +219,10 @@ export default {
                 font-size: 18px;
                 height: 30px;
                 width: calc(100% - 42px);
+            }
+
+            &-separator {
+                font-size: 20px;
             }
         }
     }
