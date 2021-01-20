@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/3.6.3/workbox-sw.js");
 
 importScripts(
-  "/Tea-Hub/precache-manifest.86ee8e7f02fed5a4f56dc7c5af1eb36e.js"
+  "/Tea-Hub/precache-manifest.900ed983e197d257f359feb85618b26c.js"
 );
 
 workbox.core.setCacheNameDetails({prefix: "test"});
