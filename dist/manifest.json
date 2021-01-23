@@ -1,15 +1,1 @@
-{
-  "name": "Tea Hub",
-  "short_name": "Tea Hub",
-  "icons": [
-    {
-      "src": "./fav.png",
-      "sizes": "16x16",
-      "type": "image/png"
-    }
-  ],
-  "start_url": "./index.html",
-  "display": "standalone",
-  "background_color": "#FFF",
-  "theme_color": "#99CC33"
-}
+{"name":"Tea Hub","short_name":"Tea Hub","theme_color":"#99CC33","icons":[{"src":"./fav.png","sizes":"16x16","type":"image/png"}],"start_url":"./index.html","display":"standalone","background_color":"#FFF"}
