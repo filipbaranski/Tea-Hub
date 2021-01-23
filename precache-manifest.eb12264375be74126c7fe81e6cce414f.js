@@ -1,15 +1,15 @@
 self.__precacheManifest = [
   {
-    "revision": "0365a8db74e6b88657cc",
-    "url": "/Tea-Hub/css/app.06fb9cc9.css"
+    "revision": "9f0d18c0e304f1e009b9",
+    "url": "/Tea-Hub/css/app.d6e5fe98.css"
   },
   {
-    "revision": "0365a8db74e6b88657cc",
-    "url": "/Tea-Hub/js/app.6a09204a.js"
+    "revision": "9f0d18c0e304f1e009b9",
+    "url": "/Tea-Hub/js/app.1789068a.js"
   },
   {
-    "revision": "594ce484521387f1f67b",
-    "url": "/Tea-Hub/js/chunk-vendors.2f7aa94e.js"
+    "revision": "95a01f823dc6f028250a",
+    "url": "/Tea-Hub/js/chunk-vendors.be15fe7f.js"
   },
   {
     "revision": "f00e8ab7adbbc17654ca76dac9128c37",
@@ -32,15 +32,15 @@ self.__precacheManifest = [
     "url": "/Tea-Hub/img/Cube.307cf342.svg"
   },
   {
-    "revision": "015a0c86cb854b46b617faa182b34e88",
+    "revision": "d527ba19e954b013b7fbd81d659d1c9b",
     "url": "/Tea-Hub/index.html"
-  },
-  {
-    "revision": "735ab4f94fbcd57074377afca324c813",
-    "url": "/Tea-Hub/robots.txt"
   },
   {
     "revision": "f00e8ab7adbbc17654ca76dac9128c37",
     "url": "/Tea-Hub/fav.png"
+  },
+  {
+    "revision": "735ab4f94fbcd57074377afca324c813",
+    "url": "/Tea-Hub/robots.txt"
   }
 ];
