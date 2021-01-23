@@ -1,28 +1,49 @@
 <template>
     <section class="calendar">
-        <main class="calendar-proper" v-if="Object.keys(calendarData).length !== 0">
+        <CalendarModal
+            v-if="editModalOpen"
+            v-on:closeModal="closeEditModal"
+            v-bind:data="this.editedData"
+        />
+        <section class="calendar-header">
+            <section>
+                <h3>{{translate(month)}}</h3>
+            </section>
+        </section>
+        <main class="calendar-proper" v-if="calendarData.year">
             <div
                 class="calendar-day"
-                v-for="day of emptyDays(year, month)"
+                v-for="day of emptyDays"
                 v-bind:key="`empty-day-${day}`"
             />
             <div
+                v-for="day of daysInMonth"
+                v-bind:key="`actual-day-${day}`"
                 :class="{
                     'calendar-day': true,
                     'calendar-day-filled': true,
-                    'green': day <= currentDay && calendarData.red.indexOf(day) === -1,
-                    'red': day <= currentDay && calendarData.red.indexOf(day) !== -1
+                    'red': day <= currentDay && calendarData.red.indexOf(day) !== -1,
+                    'blocked': day > currentDay,
+                    'current': day === currentDay
                 }"
-                v-for="day of daysInMonth(year, month)"
-                v-bind:key="`actual-day-${day}`"
+                v-on:click="openEditModal(day)"
             >
-                <p>{{dayContent(day)}}</p>
+                <p v-if="day > currentDay">{{day}}</p>
                 <div
                     v-if="day <= currentDay"
                     class="calendar-day-footer"
                 >
-                    <p>{{calendarData.number[day - 1] === 0 ? '' : calendarData.number[day - 1]}}</p>
-                    <img v-if="calendarData.no_cube.indexOf(day) === -1" src="../assets/svg/Cube.svg" />
+                    <p>
+                        {{calendarData.number[day - 1]}}
+                    </p>
+                    <img
+                        v-if="calendarData.no_cube.indexOf(day) === -1"
+                        :src="CubeWhite"
+                    />
+                    <img
+                        v-if="calendarData.no_cube.indexOf(day) !== -1"
+                        :src="Cube"
+                    />
                 </div>
             </div>
         </main>
@@ -30,36 +51,94 @@
 </template>
 
 <script>
+import CalendarModal from '@/components/CalendarModal.vue';
+import Cube from '@/assets/svg/Cube.svg';
+import CubeWhite from '@/assets/svg/CubeWhite.svg';
+
 export default {
     name: 'calendar',
+    components: {
+        CalendarModal,
+    },
     data() {
+        const currentDate = new Date();
+        const currentDateString = currentDate.toString().split(' ');
         return {
-            currentDay: new Date().getDate(),
-            month: new Date().getMonth(),
-            year: new Date().getFullYear(),
+            Cube,
+            CubeWhite,
+            currentDate,
+            editModalOpen: false,
+            editedData: {},
+            currentDay: currentDateString[2],
+            month: currentDate.getMonth(),
+            year: currentDateString[3],
         };
     },
     computed: {
         calendarData() {
             return this.$store.state.calendar;
         },
+        emptyDays() {
+            const emptyBefore = this.currentDate.getDay() - (this.currentDay % 7) + 1;
+            if (emptyBefore !== 0) return emptyBefore - 1;
+            return 6;
+        },
+        daysInMonth() {
+            return new Date(this.year, this.month + 1, 0).getDate();
+        },
     },
     methods: {
-        daysInMonth(y, m) {
-            return new Date(y, m + 1, 0).getDate();
-        },
-        emptyDays(y, m) {
-            const emptyBefore = new Date(y, m, 1).getDay();
-            if (emptyBefore === 0) {
-                return 6;
-            }
-            return emptyBefore - 1;
-        },
-        dayContent(day) {
+        openEditModal(day) {
             if (day <= this.currentDay) {
-                return '';
+                // eslint-disable-next-line
+                const { _id, number, red, no_cube } = this.calendarData;
+                const data = {
+                    date: `${day >= 10
+                        ? day : `0${day}`}.${this.month >= 9 ? this.month + 1
+                        : `0${this.month + 1}`}.${this.year}`,
+                    id: _id,
+                    day,
+                    number: number[day - 1],
+                    red: red.indexOf(day) !== -1,
+                    no_cube: no_cube.indexOf(day) !== -1,
+                };
+                this.editedData = data;
+                this.editModalOpen = true;
             }
-            return day;
+        },
+        closeEditModal() {
+            this.editModalOpen = false;
+            this.editedData = {};
+        },
+        translate(month) {
+            switch (month) {
+            case 0:
+                return 'Styczeń';
+            case 1:
+                return 'Luty';
+            case 2:
+                return 'Marzec';
+            case 3:
+                return 'Kwiecień';
+            case 4:
+                return 'Maj';
+            case 5:
+                return 'Czerwiec';
+            case 6:
+                return 'Lipiec';
+            case 7:
+                return 'Sierpień';
+            case 8:
+                return 'Wrzesień';
+            case 9:
+                return 'Październik';
+            case 10:
+                return 'Listopad';
+            case 11:
+                return 'Grudzień';
+            default:
+                return 'Nie ma takiego miesiąca';
+            }
         },
     },
 };
@@ -69,12 +148,19 @@ export default {
     @import '@/styles/global.scss';
 
     .calendar {
+        &-header {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+            text-align: center;
+        }
+
         &-proper {
             display: flex;
             flex-wrap: wrap;
-            justify-content: center;
+            justify-content: flex-start;
             max-width: 600px;
-            margin: 50px auto 0;
+            margin: 20px auto 0;
         }
 
         &-day {
@@ -93,23 +179,28 @@ export default {
             }
 
             &-filled {
-                background-color: $button-shadow;
+                background-color: $border-green;
 
                 &:hover {
                     cursor: pointer;
-                    background-color: $pale-green;
                     color: $white;
-                }
-
-                &.green {
-                    background-color: $border-green;
-
-                    &:hover { opacity: 0.5; }
+                    opacity: 0.7;
                 }
 
                 &.red {
                     background-color: $red;
-                    &:hover { opacity: 0.5; }
+                }
+
+                &.blocked {
+                    cursor: default;
+                    color: $black;
+                    background-color: $button-shadow;
+                    &:hover { opacity: 1; }
+                }
+
+                &.current {
+                    border: 2px solid $black;
+                    margin: 0;
                 }
             }
 

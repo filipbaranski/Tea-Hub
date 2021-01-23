@@ -70,7 +70,7 @@ export default {
         orderedDates() {
             if (this.datesData.length !== 0) {
                 const data = this.datesData;
-                const filtered = data.filter(date => !date.year);
+                const filtered = data.filter((date) => !date.year);
                 const result = filtered.sort(this.compare);
                 return result;
             }
@@ -79,7 +79,7 @@ export default {
         orderedOneTimeDates() {
             if (this.datesData.length !== 0) {
                 const data = this.datesData;
-                const filtered = data.filter(date => date.year);
+                const filtered = data.filter((date) => date.year);
                 const result = filtered.sort(this.compareWithYear);
                 return result;
             }

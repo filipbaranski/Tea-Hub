@@ -10,7 +10,6 @@
 import Quote from '@/components/Dashboard/Quote.vue';
 import Dates from '@/components/Dashboard/Dates.vue';
 
-
 export default {
     name: 'dashboard',
     components: {

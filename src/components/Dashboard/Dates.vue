@@ -56,7 +56,7 @@ export default {
     methods: {
         eventFilter(daysLeft) {
             const events = this.upcomingEvents;
-            const filteredEvents = events.filter(event => event.daysLeft === daysLeft);
+            const filteredEvents = events.filter((event) => event.daysLeft === daysLeft);
             return filteredEvents;
         },
     },
