@@ -1,6 +1,6 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "cf0f917a341f39116649",
+    "revision": "601df6427587a982b5b6",
     "url": "/Tea-Hub/css/app.67c663c2.css"
   },
   {
@@ -24,16 +24,16 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/Tea-Hub/img/fav.f00e8ab7.png"
   },
   {
-    "revision": "e4758204deb4ab014eb19f5d55718a3d",
+    "revision": "3cd1ba01cb64547c44bbdb89d3bce371",
     "url": "/Tea-Hub/index.html"
   },
   {
-    "revision": "cf0f917a341f39116649",
-    "url": "/Tea-Hub/js/app.6a7a9f40.js"
+    "revision": "601df6427587a982b5b6",
+    "url": "/Tea-Hub/js/app.2cc79794.js"
   },
   {
-    "revision": "9ac0a7221b326753f6af",
-    "url": "/Tea-Hub/js/chunk-vendors.a0f0d722.js"
+    "revision": "775f72a27f9f95247794",
+    "url": "/Tea-Hub/js/chunk-vendors.805cdd6d.js"
   },
   {
     "revision": "c8bbff50c05a82805ccbf1408e726ab0",
