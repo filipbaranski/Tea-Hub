@@ -1,20 +1,51 @@
 <template>
     <div class="dashboard">
+        <CalendarModal
+            v-if="editModalOpen"
+            v-on:closeModal="closeEditModal"
+            v-bind:data="this.editedData"
+        />
         <Quote class="dashboard-layout" />
-        <Dates class="dashboard-layout" />
+        <section class="dashboard-layout dashboard-bottom_container" >
+            <CalendarDay v-on:openModal="openEditModal" />
+            <Dates />
+        </section>
         <div class="dashboard-background" />
     </div>
 </template>
 
 <script>
 import Quote from '@/components/Dashboard/Quote.vue';
+import CalendarDay from '@/components/Dashboard/CalendarDay.vue';
 import Dates from '@/components/Dashboard/Dates.vue';
+
+import CalendarModal from '@/components/Calendar/CalendarModal.vue';
 
 export default {
     name: 'dashboard',
     components: {
         Quote,
+        CalendarDay,
         Dates,
+        CalendarModal,
+    },
+    data() {
+        return {
+            editModalOpen: false,
+            editedData: {},
+        };
+    },
+    methods: {
+        openEditModal(data) {
+            if (this.$store.state.calendar.calendarLoading === false) {
+                this.editedData = data;
+                this.editModalOpen = true;
+            }
+        },
+        closeEditModal() {
+            this.editModalOpen = false;
+            this.editedData = {};
+        },
     },
 };
 </script>
@@ -43,6 +74,11 @@ export default {
             transform: translateX(-50%);
             text-align: center;
             z-index: 100;
+        }
+
+        &-bottom_container {
+            position: absolute;
+            bottom: 20px;
         }
     }
 

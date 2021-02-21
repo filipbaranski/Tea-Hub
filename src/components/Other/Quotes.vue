@@ -28,9 +28,9 @@
 </template>
 
 <script>
-import AddButton from '@/components/AddButton.vue';
-import AddModal from '@/components/AddModal.vue';
-import EditModal from '@/components/EditModal.vue';
+import AddButton from '@/components/commons/AddButton.vue';
+import AddModal from '@/components/Other/AddModal.vue';
+import EditModal from '@/components/Other/EditModal.vue';
 
 export default {
     name: 'quotes',
@@ -48,7 +48,7 @@ export default {
     },
     computed: {
         quotes() {
-            return this.$store.state.quotes;
+            return this.$store.state.quotes.quotes;
         },
     },
     methods: {

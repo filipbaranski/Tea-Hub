@@ -14,10 +14,10 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/Tea-Hub/precache-manifest.b364b2f36e3164a0d73bc60893565220.js"
+  "/Tea-Hub/precache-manifest.a81de11130a24b71b41b93cf56a3c7a9.js"
 );
 
-workbox.core.setCacheNameDetails({prefix: "test"});
+workbox.core.setCacheNameDetails({prefix: "teahub"});
 
 self.addEventListener('message', (event) => {
   if (event.data && event.data.type === 'SKIP_WAITING') {

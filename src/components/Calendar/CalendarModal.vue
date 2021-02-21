@@ -14,12 +14,7 @@
                     <input id="cube" type="checkbox" v-model="no_cube" />
                     <label for="cube">
                         <img
-                            v-if="no_cube"
-                            src="../assets/svg/Cube.svg"
-                        />
-                        <img
-                            v-if="!no_cube"
-                            src="../assets/svg/CubeWhite.svg"
+                            :src="no_cube ? Cube : CubeWhite"
                         />
                     </label>
                 </div>
@@ -39,11 +34,16 @@
 </template>
 
 <script>
+import Cube from '@/assets/svg/Cube.svg';
+import CubeWhite from '@/assets/svg/CubeWhite.svg';
+
 export default {
     name: 'calendar-modal',
     props: ['data'],
     data() {
         return {
+            Cube,
+            CubeWhite,
             date: this.$props.data.date,
             id: this.$props.data.id,
             day: this.$props.data.day,
@@ -74,6 +74,17 @@ export default {
 <style scoped lang="scss">
     @import '@/styles/global.scss';
 
+    @keyframes moduleUpFadeIn {
+            0% {
+                transform: translateX(-50%) translateY(-25%);
+                opacity: 0;
+            }
+            100% {
+                transform: translateX(-50%) translateY(-50%);
+                opacity: 1;
+            }
+        }
+
     .modal {
         &-box {
             position: fixed;
@@ -81,8 +92,9 @@ export default {
             left: 0;
             width: 100vw;
             height: 100vh;
-            z-index: 10;
+            z-index: 110;
         }
+
         &-section {
             display: flex;
             justify-content: center;
@@ -97,29 +109,39 @@ export default {
                 width: 40px;
                 cursor: pointer;
             }
+
+            img {
+                width: 34px;
+                height: 34px;
+            }
         }
+
         &-selects {
             display: flex;
             justify-content: space-evenly;
             margin-bottom: 20px;
         }
+
         &-mask {
             width: 100vw;
             height: 100vh;
             background-color: $black;
             opacity: 0.5;
         }
+
         &-circle {
             width: 34px;
             height: 34px;
-            border: 3px solid $black;
             border-radius: 40px;
-            background-color: $border-green;
+            background: -webkit-linear-gradient(225deg, rgba(153,204,51,0.8) 0%,
+                rgba(153,204,51,1) 60%);
 
             &.red {
-                background-color: $red;
+                background: -webkit-linear-gradient(225deg, rgba(185,14,10,0.8) 0%,
+                    rgba(185,14,10,1) 60%);;
             }
         }
+
         &-proper {
             position: absolute;
             top: 50%;
@@ -133,12 +155,14 @@ export default {
             border-radius: 6px;
             z-index: 20;
             box-shadow: $box-shadow;
+            animation: moduleUpFadeIn 0.5s;
 
             header {
                 font-size: 24px;
                 margin: 0 auto 20px;
                 width: fit-content;
                 border-bottom: 2px solid $border-green;
+                padding: 2px 6px;
             }
 
             textarea {
@@ -207,11 +231,6 @@ export default {
                     }
                 }
             }
-        }
-    }
-
-    @media only screen and (min-width: 1024px) {
-        .modal-box {
         }
     }
 </style>

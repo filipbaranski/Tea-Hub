@@ -11,24 +11,11 @@
             type='date'
             v-bind:data="this.editedData"
         />
-        <div
-            v-for="date of orderedOneTimeDates"
-            v-bind:key="date.id"
-            :class="{'date-container': true, 'grey': passed(date) === true}"
-            v-on:click="openEditModal(date)"
-        >
-            <p class="date-format">
-                {{ date.day }}.{{ date.month }}.{{ date.year }}
-            </p>
-            <p class="date-event">
-                {{ date.event }}
-            </p>
-        </div>
-        <p class="date-separator">Coroczne</p>
+        <p class="date-separator first">Coroczne</p>
         <div
             v-for="date of orderedDates"
             v-bind:key="date.id"
-            class="date-container"
+            :class="{'date-container': true, 'loading': datesDateUpdating.indexOf(date._id) !== -1}"
             v-on:click="openEditModal(date)"
         >
             <p class="date-format">
@@ -37,6 +24,42 @@
             <p class="date-event">
                 {{ date.event }}
             </p>
+            <div
+                v-if="(datesLoading === true && datesDateUpdating.length === 0)
+                    || datesDateUpdating.indexOf(date._id) !== -1"
+                class="date-loader"
+            />
+            <div
+                v-if="(datesLoading === true && datesDateUpdating.length === 0)
+                    || datesDateUpdating.indexOf(date._id) !== -1"
+                class='date-mask'
+            />
+        </div>
+        <p class="date-separator">Terminy</p>
+        <div
+            v-for="date of orderedOneTimeDates"
+            v-bind:key="date.id"
+            :class="{'date-container': true,
+                'grey': passed(date) === true,
+                'loading': datesDateUpdating.indexOf(date._id) !== -1}"
+            v-on:click="openEditModal(date)"
+        >
+            <p class="date-format">
+                {{ date.day }}.{{ date.month }}.{{ date.year }}
+            </p>
+            <p class="date-event">
+                {{ date.event }}
+            </p>
+            <div
+                v-if="(datesLoading === true && datesDateUpdating.length === 0)
+                    || datesDateUpdating.indexOf(date._id) !== -1"
+                class="date-loader"
+            />
+            <div
+                v-if="(datesLoading === true && datesDateUpdating.length === 0)
+                    || datesDateUpdating.indexOf(date._id) !== -1"
+                class='date-mask'
+            />
         </div>
         <section v-on:click="openModal">
             <AddButton />
@@ -45,12 +68,12 @@
 </template>
 
 <script>
-import AddButton from '@/components/AddButton.vue';
-import AddModal from '@/components/AddModal.vue';
-import EditModal from '@/components/EditModal.vue';
+import AddButton from '@/components/commons/AddButton.vue';
+import AddModal from '@/components/Other/AddModal.vue';
+import EditModal from '@/components/Other/EditModal.vue';
 
 export default {
-    name: 'tabs',
+    name: 'date',
     components: {
         AddButton,
         AddModal,
@@ -64,8 +87,14 @@ export default {
         };
     },
     computed: {
+        datesDateUpdating() {
+            return this.$store.state.dates.datesDateUpdating;
+        },
+        datesLoading() {
+            return this.$store.state.dates.datesLoading;
+        },
         datesData() {
-            return this.$store.state.dates;
+            return this.$store.state.dates.dates;
         },
         orderedDates() {
             if (this.datesData.length !== 0) {
@@ -106,8 +135,10 @@ export default {
             this.addModalOpen = false;
         },
         openEditModal(data) {
-            this.editedData = data;
-            this.editModalOpen = true;
+            if (this.datesLoading === false && this.datesDateUpdating.indexOf(data._id) === -1) {
+                this.editedData = data;
+                this.editModalOpen = true;
+            }
         },
         closeEditModal() {
             this.editModalOpen = false;
@@ -127,6 +158,15 @@ export default {
 <style scoped lang="scss">
     @import '@/styles/global.scss';
 
+    @keyframes rotateLoader {
+        0% {
+            transform: translateY(-50%) rotate(0deg);
+        }
+        100% {
+            transform: translateY(-50%) rotate(360deg);
+        }
+    }
+
     .date {
         display: flex;
         flex-direction: column;
@@ -134,7 +174,33 @@ export default {
         justify-content: center;
         align-items: center;
 
+        &-loader {
+            position: absolute;
+            bottom: -8px;
+            right: 5px;
+            height: 14px;
+            width: 14px;
+            border-radius: 20px;
+            border-top: 3px solid $border-green;
+            border-bottom: 3px solid $border-green;
+            border-left: 3px solid transparent;
+            border-right: 3px solid transparent;
+            z-index: 10000;
+            animation: rotateLoader 1s linear infinite;
+        }
+
+        &-mask {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-color: $white;
+            z-index: 1000;
+            opacity: 0.5;
+            cursor: default;
+        }
+
         &-container {
+            position: relative;
             width: calc(100% - 20px);
             display: flex;
             align-items: center;
@@ -142,6 +208,7 @@ export default {
             border: 2px solid $border-green;
             height: 25px;
             font-size: 14px;
+            z-index: 1;
 
             &.grey {
                 border: 2px solid $grey;
@@ -158,6 +225,10 @@ export default {
             &:hover {
                 background: $pale-green;
                 cursor: pointer;
+            }
+
+            &.loading {
+                z-index: -1;
             }
 
             section {
@@ -190,6 +261,10 @@ export default {
             width: 83.33%;
             padding-left: 16.67%;
             text-align: center;
+
+            &.first {
+                margin-top: 0;
+            }
         }
 
         &-format {
@@ -208,12 +283,17 @@ export default {
             display: flex;
             justify-content: center;
             align-items: center;
+            height: 100%;
         }
     }
 
     @media only screen and (min-width: 1024px) {
         .date {
             flex-direction: row;
+
+            &-loader {
+                bottom: -6px;
+            }
 
             &-container {
                 font-size: 18px;

@@ -2,7 +2,7 @@
     <section class="modal-box">
         <div class="modal-mask" v-on:click="$emit('closeModal')" />
         <section class="modal-proper">
-            <header>Dodaj</header>
+            <header>Edytuj</header>
             <textarea
                 v-model="quote.text"
                 v-if="type === 'quote'"
@@ -41,8 +41,9 @@
                 spellcheck="false"
             />
             <footer>
-                <button v-on:click="send">Stwórz</button>
+                <button v-on:click="update">Zmień</button>
                 <button v-on:click="$emit('closeModal')">Anuluj</button>
+                <button v-on:click="remove">Usuń</button>
             </footer>
             <p v-if="error">Coś jest nie tak...</p>
         </section>
@@ -52,18 +53,18 @@
 <script>
 export default {
     name: 'add-modal',
-    props: ['type'],
+    props: ['type', 'data'],
     data() {
         return {
             quote: {
-                text: '',
-                strong: '',
+                text: this.$props.data.text || '',
+                strong: this.$props.data.strong || '',
             },
             date: {
-                day: '',
-                month: '',
-                year: '',
-                event: '',
+                day: this.$props.data.day || '',
+                month: this.$props.data.month || '',
+                year: this.$props.data.year || '',
+                event: this.$props.data.event || '',
             },
             error: false,
         };
@@ -88,15 +89,18 @@ export default {
             }
             return false;
         },
-        send() {
-            const { type } = this.$props;
+        update() {
+            const { type, data } = this.$props;
+            const id = data._id;
             if (type === 'quote') {
                 const isValid = this.validate('quote', this.quote);
                 if (isValid) {
-                    this.$store.dispatch('postQuote', {
+                    this.error = false;
+                    const payload = {
                         text: this.quote.text,
                         strong: this.quote.strong,
-                    })
+                    };
+                    this.$store.dispatch('updateQuote', { id, payload })
                         .then(() => {
                             this.$emit('closeModal');
                         });
@@ -112,7 +116,7 @@ export default {
                         event: this.date.event,
                     };
                     if (this.date.year !== '') payload.year = this.date.year;
-                    this.$store.dispatch('postDate', payload)
+                    this.$store.dispatch('updateDate', { id, payload })
                         .then(() => {
                             this.$emit('closeModal');
                         });
@@ -121,12 +125,39 @@ export default {
                 }
             }
         },
+        remove() {
+            const { type, data } = this.$props;
+            const id = data._id;
+            if (type === 'quote') {
+                this.$store.dispatch('deleteQuote', id)
+                    .then(() => {
+                        this.$emit('closeModal');
+                    });
+            }
+            if (type === 'date') {
+                this.$store.dispatch('deleteDate', id)
+                    .then(() => {
+                        this.$emit('closeModal');
+                    });
+            }
+        },
     },
 };
 </script>
 
 <style scoped lang="scss">
     @import '@/styles/global.scss';
+
+    @keyframes moduleUpFadeIn {
+            0% {
+                transform: translateX(-50%) translateY(-25%);
+                opacity: 0;
+            }
+            100% {
+                transform: translateX(-50%) translateY(-50%);
+                opacity: 1;
+            }
+        }
 
     .modal {
         &-box {
@@ -156,12 +187,14 @@ export default {
             border-radius: 6px;
             z-index: 20;
             box-shadow: $box-shadow;
+            animation: moduleUpFadeIn 0.5s;
 
             header {
                 font-size: 24px;
                 margin: 0 auto 20px;
                 width: fit-content;
                 border-bottom: 2px solid $border-green;
+                padding: 2px 6px;
             }
 
             textarea {
@@ -216,18 +249,20 @@ export default {
 
                     &:first-child {
                         background-color: $border-green;
+                        width: 35%;
                     }
 
-                    &:last-child {
+                    &:nth-child(2) {
                         background-color: $grey;
+                        width: 35%;
+                    }
+
+                    &:nth-child(3) {
+                        background-color: $red;
+                        width: 15%;
                     }
                 }
             }
-        }
-    }
-
-    @media only screen and (min-width: 1024px) {
-        .modal-box {
         }
     }
 </style>

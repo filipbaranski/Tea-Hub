@@ -1,11 +1,11 @@
 <template>
     <nav v-on:click="$emit('closeMenu')">
-        <router-link
+        <!-- <router-link
             to="/projects"
             :class="{'active': route === 'projects' }"
         >
             Projekty
-        </router-link>
+        </router-link> -->
         <router-link
             v-if="role === 'admin'"
             to="/calendar"

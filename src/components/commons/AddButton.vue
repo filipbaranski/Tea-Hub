@@ -25,6 +25,7 @@ export default {
         font-size: 24px;
         color: $white;
         box-shadow: $box-shadow;
+        z-index: 8;
 
         &:hover {
             background-color: $pale-green;

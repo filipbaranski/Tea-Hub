@@ -1,5 +1,5 @@
 <template>
-    <div class="quote">
+    <div v-if="quotes.length !== 0" class="quote">
         <p>{{ randomQuote.strong }}</p>
     </div>
 </template>
@@ -10,7 +10,7 @@ export default {
     name: 'quote',
     computed: {
         quotes() {
-            return this.$store.state.quotes;
+            return this.$store.state.quotes.quotes;
         },
         randomQuote() {
             if (this.quotes.length !== 0) {
