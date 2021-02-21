@@ -90,7 +90,7 @@ export default {
         height: 100vh;
         width: 100vw;
         opacity: 0;
-        z-index: 200;
+        z-index: 20000;
         transition: right 0.25s, opacity 0.5s;
 
         &.open {

@@ -43,7 +43,6 @@ export default {
     @media only screen and (min-width: 768px) {
         .banner {
             height: 75px;
-            background-image: url('../../assets/bar.png');
 
             &.sticky {
                 margin-bottom: 0;

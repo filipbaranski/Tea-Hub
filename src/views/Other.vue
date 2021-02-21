@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import Tabs from '@/components/Tabs.vue';
+import Tabs from '@/components/commons/Tabs.vue';
 import Quotes from '@/components/Other/Quotes.vue';
 import Dates from '@/components/Other/Dates.vue';
 
